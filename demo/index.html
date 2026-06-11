@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>进秀电子 · AI 智能选型助手（演示版）</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">JX</div>
+      <div>
+        <h1>进秀电子 · AI 智能选型助手</h1>
+        <p>声学设备 / 测试卡 / 工装治具 — 非标定制智能售前</p>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <span id="modeBadge" class="badge badge-demo">演示模式（内置规则引擎）</span>
+      <button id="settingsBtn" class="btn btn-ghost" type="button">⚙ 设置</button>
+    </div>
+  </header>
+  <div class="trust-strip">服务多家 500 强企业 · 产品出口美国 / 墨西哥 / 泰国 / 越南 / 印度 · 声学及工装治具非标定制制造商</div>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="chat" type="button">💬 智能选型对话</button>
+    <button class="tab" data-tab="cpq" type="button">🧮 隔音箱快速报价</button>
+    <button class="tab" data-tab="catalog" type="button">📦 产品库</button>
+  </nav>
+
+  <main>
+    <!-- 智能选型对话 -->
+    <section id="tab-chat" class="tab-panel active">
+      <div class="chat-wrap">
+        <div id="chatLog" class="chat-log">
+          <div class="msg msg-bot">
+            <div class="msg-body">
+              您好！我是进秀电子的智能选型助手。请用一句话描述您的需求，例如：
+              <ul>
+                <li>"我需要一个能放进产线工位的隔音箱，内部至少 1 米宽，隔音 40dB"</li>
+                <li>"要测 HDMI 2.1 接口，有没有对应的测试卡？"</li>
+                <li>"想给整条流水线做降噪"</li>
+              </ul>
+              我会为您匹配产品并给出初步方案和预算区间。
+            </div>
+          </div>
+        </div>
+        <div class="quick-asks">
+          <button class="chip" type="button">产线工位隔音箱，内宽1米，隔音40dB</button>
+          <button class="chip" type="button">HDMI 和 Type-C 接口测试卡</button>
+          <button class="chip" type="button">风机噪声测试用消音室</button>
+          <button class="chip" type="button">SMT产线定制治具</button>
+        </div>
+        <form id="chatForm" class="chat-input">
+          <input id="chatText" type="text" placeholder="描述您的使用场景、尺寸、隔音量等需求…" autocomplete="off" />
+          <button class="btn btn-primary" type="submit">发送</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- CPQ 报价 -->
+    <section id="tab-cpq" class="tab-panel">
+      <div class="cpq-grid">
+        <form id="cpqForm" class="card">
+          <h2>参数化报价（CPQ）</h2>
+          <p class="muted">输入设备参数，系统按规则自动估算预算区间与交期。</p>
+
+          <label>产品类型
+            <select id="cpqType">
+              <option value="box">隔音箱（桌面/落地）</option>
+              <option value="room">静音房</option>
+              <option value="anechoic">消音室</option>
+              <option value="line">流水线静音室</option>
+            </select>
+          </label>
+
+          <div class="dim-row">
+            <label>内部长 (mm)<input id="cpqL" type="number" value="1200" min="300" max="10000" /></label>
+            <label>内部宽 (mm)<input id="cpqW" type="number" value="1000" min="300" max="10000" /></label>
+            <label>内部高 (mm)<input id="cpqH" type="number" value="1200" min="300" max="6000" /></label>
+          </div>
+
+          <label>目标隔音量
+            <select id="cpqDb">
+              <option value="25">≈25 dB（基础隔音）</option>
+              <option value="35" selected>≈35 dB（常规测试）</option>
+              <option value="45">≈45 dB（精密声学测试）</option>
+            </select>
+          </label>
+
+          <label>数量<input id="cpqQty" type="number" value="1" min="1" max="100" /></label>
+
+          <fieldset>
+            <legend>选配件</legend>
+            <label class="check"><input type="checkbox" id="optWindow" checked /> 隔音观察窗</label>
+            <label class="check"><input type="checkbox" id="optVent" /> 排风消音通道</label>
+            <label class="check"><input type="checkbox" id="optPanel" checked /> 线缆接口板</label>
+            <label class="check"><input type="checkbox" id="optWheel" /> 移动脚轮</label>
+            <label class="check"><input type="checkbox" id="optLight" /> 内置照明</label>
+          </fieldset>
+
+          <button class="btn btn-primary" type="submit">生成报价估算</button>
+        </form>
+
+        <div id="cpqResult" class="card cpq-result">
+          <h2>估算结果</h2>
+          <p class="muted">填写左侧参数后点击"生成报价估算"。</p>
+        </div>
+      </div>
+      <p class="disclaimer">⚠ 演示说明：本页所有价格均为虚构示例数据，仅用于展示报价系统逻辑，不代表进秀电子真实报价。</p>
+    </section>
+
+    <!-- 产品库 -->
+    <section id="tab-catalog" class="tab-panel">
+      <div id="catalogGrid" class="catalog-grid"></div>
+      <p class="disclaimer">⚠ 演示说明：产品参数与价格区间为演示用示例数据，正式部署时接入企业真实产品库。</p>
+    </section>
+  </main>
+
+  <!-- 设置抽屉 -->
+  <div id="settingsDrawer" class="drawer hidden">
+    <div class="drawer-panel card">
+      <h2>AI 模式设置</h2>
+      <p class="muted">默认使用内置规则引擎（可离线演示）。填入 Anthropic API Key 后切换为 Claude 大模型实时对话，体验完整 AI 选型能力。</p>
+      <label>Anthropic API Key
+        <input id="apiKeyInput" type="password" placeholder="sk-ant-…" autocomplete="off" />
+      </label>
+      <p class="muted small">Key 仅保存在您本机浏览器 localStorage，不会上传到任何服务器。演示用途请使用低额度 Key。</p>
+      <div class="drawer-actions">
+        <button id="saveKeyBtn" class="btn btn-primary" type="button">保存并启用 AI 模式</button>
+        <button id="clearKeyBtn" class="btn btn-ghost" type="button">清除 Key（回到演示模式）</button>
+        <button id="closeDrawerBtn" class="btn btn-ghost" type="button">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p class="footer-contact">咨询热线 021-33730078 · 邮箱 jx@jinxiutec.com · 上海市奉贤区南桥镇运河北路1099号</p>
+    <p>Demo by agentic-commerce · 面向上海进秀电子科技有限公司的售前智能化方案演示 · 所有价格均为示例数据</p>
+  </footer>
+
+  <script src="products.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
